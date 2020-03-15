@@ -1,0 +1,45 @@
+<h1> Bienvenido a <%= @section.section_name %> </h1>
+
+<h2>Crear post:</h2>
+<%= form_with(model: [ @section, @section.posts.build ], local: true) do |form| %>
+  <p>
+    <%= form.label :message %><br>
+    <%= form.text_field :message %>
+  </p>
+  <p>
+    <%= form.label :image %>
+    <%= form.file_field :image %>
+  </p>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
+<h2>Posts</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Mensaje</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @section.posts.each do |post| %>
+      <tr>
+        <td><%= post.user_id %></td>
+        <td><%= link_to 'Ver', url_for([@section, post]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<td><%= link_to 'Volver', sections_path %></td>
+<% if session[:user_id] == @section.user_id %>
+  | <td><%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestan tambien seran eliminados.'  } %></td>
+<% end %>

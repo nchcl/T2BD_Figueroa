@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  section: one
+  user: one
+  message: MyText
+  date_created: 2020-03-14
+  time_created: 2020-03-14 21:25:58
+  likes: 
+  dislikes: 
+  locked: false
+
+two:
+  section: two
+  user: two
+  message: MyText
+  date_created: 2020-03-14
+  time_created: 2020-03-14 21:25:58
+  likes: 
+  dislikes: 
+  locked: false
