@@ -43,7 +43,9 @@
   </tbody>
 </table>
 
+
+
 <td><%= link_to 'Volver', sections_path %></td>
 <% if session[:user_id] == @section.user_id %>
-  | <td><%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestan tambien seran eliminados.'  } %></td>
+  | <td><%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestas tambien seran eliminados.'  } %></td>
 <% end %>

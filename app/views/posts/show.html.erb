@@ -1,2 +1,29 @@
-<% post = Post.find(params[:id]) %>
-<%= post.message %>
+<table>
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Mensaje</th>
+      <th>Imagen</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user = User.find(params[:id] = @post.user_id) %>
+    <tr>
+      <td><%= @user.username %></td>
+      <td><%= @post.message %></td>
+      <% if @post.image.attached? %>
+        <td><%= image_tag @post.image.variant(resize_to_limit: [100, 100]) %></td>
+      <% else %>
+        <td>No hay foto</td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+
+
+<td><%= link_to 'Volver', section_path(@section) %></td>
+<% if session[:user_id] == @post.user_id %>
+  | <td><%= link_to 'Destruir post',  [@post.section, @post], method: :delete, data: { confirm: 'Seguro que quieres borrar el post? Todas las respuestas tambien seran eliminadas.'  } %></td>
+<% end %>
