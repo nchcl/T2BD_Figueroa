@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_15_002558) do
+ActiveRecord::Schema.define(version: 2020_03_17_162248) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -48,6 +48,20 @@ ActiveRecord::Schema.define(version: 2020_03_15_002558) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "replies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "section_id", null: false
+    t.bigint "user_id", null: false
+    t.date "date_created"
+    t.time "time_created"
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["post_id"], name: "index_replies_on_post_id"
+    t.index ["section_id"], name: "index_replies_on_section_id"
+    t.index ["user_id"], name: "index_replies_on_user_id"
+  end
+
   create_table "sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "section_name"
     t.bigint "user_id", null: false
@@ -73,5 +87,8 @@ ActiveRecord::Schema.define(version: 2020_03_15_002558) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "posts", "sections"
   add_foreign_key "posts", "users"
+  add_foreign_key "replies", "posts"
+  add_foreign_key "replies", "sections"
+  add_foreign_key "replies", "users"
   add_foreign_key "sections", "users"
 end

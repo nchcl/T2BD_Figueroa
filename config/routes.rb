@@ -4,10 +4,12 @@ Rails.application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
   resources :sections do
-    resources :posts
+    resources :posts do
+      resources :replies
+    end
   end
-  get 'sections', to: 'sections#index'
 
+  get 'sections', to: 'sections#index'
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'

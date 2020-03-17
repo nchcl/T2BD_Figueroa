@@ -1,3 +1,27 @@
+<h2>Crear respuesta:</h2>
+<%= form_with(model: [@section, @post, @post.replies.build], local: true) do |form| %>
+  <p>
+    <%= form.label :message %>
+    <%= form.text_field :message %>
+  </p>
+  <p>
+    <%= form.label :image %>
+    <%= form.file_field :image %>
+  </p>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :section_id, value: @post.section_id %>
+  </div>
+
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
 <table>
   <thead>
     <tr>
@@ -22,6 +46,28 @@
   </tbody>
 </table>
 
+<table>
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Mensaje</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @post.replies.each do |reply| %>
+    <% if reply.message != nil %>
+    <% user = User.find(reply.user_id) %>
+        <tr>
+          <td><%= user.username %></td>
+          <td><%= reply.message %></td>
+          <td><%= link_to 'Ver', url_for([@section, @post, reply]) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
 
 <td><%= link_to 'Volver', section_path(@section) %></td>
 <% if session[:user_id] == @post.user_id %>
