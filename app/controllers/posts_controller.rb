@@ -8,6 +8,7 @@ class PostsController < ApplicationController
   def create
     @section = Section.find(params[:section_id])
     @post = @section.posts.create(post_params)
+    redirect_to @section
   end
 
   private

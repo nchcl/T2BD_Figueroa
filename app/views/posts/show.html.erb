@@ -1,3 +1,2 @@
-<h1> Hola </h1>
-
-<%= @post.message %>
+<% post = Post.find(params[:id]) %>
+<%= post.message %>

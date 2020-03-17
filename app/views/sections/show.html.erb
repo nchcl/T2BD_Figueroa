@@ -3,7 +3,7 @@
 <h2>Crear post:</h2>
 <%= form_with(model: [ @section, @section.posts.build ], local: true) do |form| %>
   <p>
-    <%= form.label :message %><br>
+    <%= form.label :message %>
     <%= form.text_field :message %>
   </p>
   <p>
@@ -24,6 +24,7 @@
 <table>
   <thead>
     <tr>
+      <th>Usuario</th>
       <th>Mensaje</th>
       <th colspan="2"></th>
     </tr>
@@ -31,10 +32,13 @@
 
   <tbody>
     <% @section.posts.each do |post| %>
-      <tr>
-        <td><%= post.user_id %></td>
-        <td><%= link_to 'Ver', url_for([@section, post]) %></td>
-      </tr>
+      <% if post.message != nil %>
+        <tr>
+            <td><%= render :partial => '/posts/user_helper', locals: {post: post} %></td>
+            <td><%= post[:message] %></td>
+            <td><%= link_to 'Ver', url_for([@section, post]) %></td>
+          </tr>
+          <% end %>
     <% end %>
   </tbody>
 </table>
