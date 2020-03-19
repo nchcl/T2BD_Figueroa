@@ -1,3 +1,6 @@
+<% if @post.locked %>
+<h2>Post cerrado</h2>
+<% else %>
 <h2>Crear respuesta:</h2>
 <%= form_with(model: [@section, @post, @post.replies.build], local: true) do |form| %>
   <p>
@@ -20,6 +23,7 @@
   <p>
     <%= form.submit %>
   </p>
+<% end %>
 <% end %>
 
 <table>
@@ -62,7 +66,7 @@
         <tr>
           <td><%= user.username %></td>
           <td><%= reply.message %></td>
-          <% if session[:user_id] == reply.user_id %>
+          <% if session[:user_id] == reply.user_id or Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? %>
             <td>
               <%= link_to 'Borrar', [reply.section, reply.post, reply],
               method: :delete,
@@ -76,6 +80,10 @@
 </table>
 
 <td><%= link_to 'Volver', section_path(@section) %></td>
-<% if session[:user_id] == @post.user_id %>
+<% if session[:user_id] == @post.user_id or Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? %>
   | <td><%= link_to 'Destruir post',  [@post.section, @post], method: :delete, data: { confirm: 'Seguro que quieres borrar el post? Todas las respuestas tambien seran eliminadas.'  } %></td>
+<% end %>
+
+<% if Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? and !@post.locked %>
+  | <td><%= link_to 'Dejar inactivo', section_post_path(@section, @post, :locked => true), method: :put, data: { confirm: "Are you sure?" } %></td>
 <% end %>

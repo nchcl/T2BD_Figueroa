@@ -11,6 +11,14 @@ class PostsController < ApplicationController
     redirect_to @section
   end
 
+  def update
+    @section = Section.find(params[:section_id])
+    @post = Post.find(params[:id])
+    if @post.update_attribute(:locked, params[:locked])
+      redirect_to section_post_path(@section, @post)
+    end
+  end
+
   def destroy
     @section = Section.find(params[:section_id])
     @post = Post.find(params[:id])

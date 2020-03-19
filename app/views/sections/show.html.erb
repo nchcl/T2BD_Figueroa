@@ -44,11 +44,8 @@
 </table>
 
 <td><%= link_to 'Volver', sections_path %></td>
-<% if Admin.where("section_id = ? AND user_id = ?", params[:id], session[:user_id]).present? %>
+<% if session[:user_id] == Admin.where("section_id = ?", params[:id]).first.user_id %>
   <td>| <%= link_to 'Agregar admin', new_section_admin_path(@section) %> </td>
-  <td>| <%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestas tambien seran eliminados.'  } %></td>
-
-<% elsif session[:user_id] == Admin.where("section_id = ?", params[:id]).first.user_id %>
   <td>| <%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestas tambien seran eliminados.'  } %></td>
 
 <% end %>

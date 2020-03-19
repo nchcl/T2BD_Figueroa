@@ -9,7 +9,7 @@
 
   <tbody>
     <% @users.each do |user| %>
-      <% if !Admin.where("user_id = ?", user.id).present? %>
+      <% if !Admin.where("section_id = ? AND user_id = ?", @section.id, user.id).present? %>
         <tr>
           <td><%= user.username %></td>
           <td>
