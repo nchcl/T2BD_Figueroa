@@ -1,0 +1,36 @@
+<h2>Agregar admin:</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Nombre de Usuario</th>
+      <th colspan="1"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <% if !Admin.where("user_id = ?", user.id).present? %>
+        <tr>
+          <td><%= user.username %></td>
+          <td>
+            <%= form_with(model: [@section, @section.admins.build], local: true) do |form| %>
+
+              <div class="field">
+                <%= form.hidden_field :admin_name, value: user.username %>
+              </div>
+
+              <div class="field">
+                <%= form.hidden_field :user_id, value: user.id %>
+              </div>
+
+              <p>
+                <%= form.submit %>
+              </p>
+
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

@@ -18,6 +18,7 @@ class SectionsController < ApplicationController
     @section = @user.sections.build(section_params)
 
     if @section.save
+      Admin.create(admin_name: @user.username, user_id: @user.id, section_id: @section.id)
       redirect_to @section
     else
       render 'new'
@@ -25,13 +26,9 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    @user = current_user
-    @section = @user.sections.find(params[:id])
+    @section = Section.find(params[:id])
     @section.destroy
-    respond_to do |format|
-      format.html { redirect_to sections_url, notice: 'Section was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to sections_url
   end
 
   private

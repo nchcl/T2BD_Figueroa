@@ -13,12 +13,9 @@ class PostsController < ApplicationController
 
   def destroy
     @section = Section.find(params[:section_id])
-    @post = @section.posts.find(params[:id])
+    @post = Post.find(params[:id])
     @post.destroy
-    respond_to do |format|
-      format.html { redirect_to section_path(@section), notice: 'Post was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to section_path(@section)
   end
 
   private

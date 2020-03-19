@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :sections, :dependent => :destroy
   has_many :posts, :dependent => :destroy
   has_many :replies, :dependent => :destroy
+  has_many :admins, :dependent => :destroy
   has_secure_password
   validates :email, presence: true, uniqueness: true
   #validates :password_digest, :length => { :maximum => 30 }

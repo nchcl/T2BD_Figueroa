@@ -62,7 +62,13 @@
         <tr>
           <td><%= user.username %></td>
           <td><%= reply.message %></td>
-          <td><%= link_to 'Ver', url_for([@section, @post, reply]) %></td>
+          <% if session[:user_id] == reply.user_id %>
+            <td>
+              <%= link_to 'Borrar', [reply.section, reply.post, reply],
+              method: :delete,
+              data: { confirm: 'Seguro?' } %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     <% end %>

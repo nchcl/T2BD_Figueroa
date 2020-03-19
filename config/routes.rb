@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :posts do
       resources :replies
     end
+    resources :admins, only: [:new, :create, :destroy]
   end
 
   get 'sections', to: 'sections#index'
