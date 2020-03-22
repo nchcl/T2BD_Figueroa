@@ -3,7 +3,7 @@
 <% if current_user %>
   <%= link_to 'Nueva seccion', new_section_path %>
 <% else %>
-  <p>Necesitas estar logeado para crear secciones</p>
+  <p>Necesitas estar logeado para crear y ver secciones</p>
 <% end %>
 
 <table>
@@ -20,7 +20,9 @@
       <tr>
         <td><%= section.section_name %></td>
         <td><%= section.created_date %></td>
-        <td><%= link_to 'Ver', section %></td>
+        <% if current_user != nil%>
+          <td><%= link_to 'Ver', section %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>

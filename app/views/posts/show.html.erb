@@ -7,10 +7,6 @@
     <%= form.label :message %>
     <%= form.text_field :message %>
   </p>
-  <p>
-    <%= form.label :image %>
-    <%= form.file_field :image %>
-  </p>
 
   <div class="field">
     <%= form.hidden_field :user_id, value: current_user.id %>
@@ -26,13 +22,20 @@
 <% end %>
 <% end %>
 
-<table>
+<div class="img" align="center">
+  <% if @post.image.attached? %>
+    <td><%= image_tag @post.image %></td>
+  <% end %>
+  </div>
+
+<table border="1" >
   <thead>
     <tr>
       <th>Usuario</th>
+      <th>Fecha</th>
+      <th>Hora</th>
       <th>Mensaje</th>
-      <th>Imagen</th>
-      <th colspan="2"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
@@ -40,40 +43,39 @@
     <% @user = User.find(params[:id] = @post.user_id) %>
     <tr>
       <td><%= @user.username %></td>
-      <td><%= @post.message %></td>
-      <% if @post.image.attached? %>
-        <td><%= image_tag @post.image.variant(resize_to_limit: [100, 100]) %></td>
-      <% else %>
-        <td>No hay foto</td>
-      <% end %>
+      <td><%= @post.date_created %></td>
+      <td><%= @post.time_created.strftime("%H:%M:%S") %></td>
     </tr>
+    <% if @user.avatar.attached? %>
+      <td><%= image_tag @user.avatar.variant(resize_to_limit: [50, 50]) %></td>
+    <% end %>
+    <td><b> Respueston: </b> <br> <%= @user.nivel_respueston %></td>
+    <td><b> Publicon: </b><br> <%= @user.nivel_publicon %></td>
+    <td><%= @post.message %></td>
   </tbody>
-</table>
-
-<table>
-  <thead>
-    <tr>
-      <th>Usuario</th>
-      <th>Mensaje</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
 
   <tbody>
     <% @post.replies.each do |reply| %>
-    <% if reply.message != nil %>
-    <% user = User.find(reply.user_id) %>
+      <% if reply.message != nil %>
+        <% user = User.find(reply.user_id) %>
         <tr>
           <td><%= user.username %></td>
-          <td><%= reply.message %></td>
-          <% if session[:user_id] == reply.user_id or Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? %>
-            <td>
-              <%= link_to 'Borrar', [reply.section, reply.post, reply],
-              method: :delete,
-              data: { confirm: 'Seguro?' } %>
-            </td>
-          <% end %>
+          <td><%= @post.date_created %></td>
+          <td><%= @post.time_created.strftime("%H:%M:%S") %></td>
         </tr>
+        <% if user.avatar.attached? %>
+          <td><%= image_tag user.avatar.variant(resize_to_limit: [50, 50]) %></td>
+        <% end %>
+        <td><b> Respueston: </b><br> <%= user.nivel_respueston %></td>
+        <td><b> Publicon: </b><br> <%= user.nivel_publicon %></td>
+        <td><%= reply.message %></td>
+        <% if session[:user_id] == reply.user_id or Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? %>
+          <td>
+            <%= link_to 'Borrar', [reply.section, reply.post, reply],
+            method: :delete,
+            data: { confirm: 'Seguro?' } %>
+          </td>
+        <% end %>
       <% end %>
     <% end %>
   </tbody>

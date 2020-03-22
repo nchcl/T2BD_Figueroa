@@ -20,6 +20,12 @@
   </p>
 <% end %>
 
+<h2>Admins</h2>
+<td><%= link_to 'Ver admins', section_admins_path(@section) %> </td> <br>
+<% if session[:user_id] == Admin.where("section_id = ?", params[:id]).first.user_id %>
+  <td><%= link_to 'Agregar admin', new_section_admin_path(@section) %> </td>
+<% end %>
+
 <h2>Posts</h2>
 <table>
   <thead>
@@ -45,7 +51,5 @@
 
 <td><%= link_to 'Volver', sections_path %></td>
 <% if session[:user_id] == Admin.where("section_id = ?", params[:id]).first.user_id %>
-  <td>| <%= link_to 'Agregar admin', new_section_admin_path(@section) %> </td>
   <td>| <%= link_to 'Destruir seccion',  @section, method: :delete, data: { confirm: 'Seguro que quieres borrar la seccion? Todos los posts y respuestas tambien seran eliminados.'  } %></td>
-
 <% end %>
