@@ -1,5 +1,5 @@
 # README
-
+Ignacio Figueroa, rol: 201773526-0
 ## Instrucciones de ejecución
 * Descargar la carpeta como archivo .zip.
 * Extraer el archivo .zip en una carpeta.
