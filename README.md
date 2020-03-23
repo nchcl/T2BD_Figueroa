@@ -15,6 +15,7 @@ rails server
 * Por último entrar a http://localhost:3000/ para ver la aplicación web.
 * Cualquier cosa works on my machine (no pero en serio cualquier cosa avisar pls)
 ## Comentarios
+* Usar los links en las páginas para moverse.
 * Se necesita crear una cuenta y estar logeado para ver y crear secciones.
 * Cuando se crea una cuenta no se logea automáticamente, hay que hacer click en login y meter los datos.
 * En la parte final de la página que muestra un post está la opción de dejarlo como inactivo (si es que se es administrador).
