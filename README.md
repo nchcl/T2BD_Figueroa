@@ -12,6 +12,7 @@ rails server
 yarn install --check-files
 rails server
 ```
+* Por último entrar a http://localhost:3000/ para ver la aplicación web.
 * Cualquier cosa works on my machine (no pero en serio cualquier cosa avisar pls)
 ## Comentarios
 * Se necesita crear una cuenta y estar logeado para ver y crear secciones.
