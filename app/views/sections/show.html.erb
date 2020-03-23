@@ -27,12 +27,14 @@
 <% end %>
 
 <h2>Posts</h2>
-<table>
+<table border="1">
   <thead>
     <tr>
       <th>Usuario</th>
       <th>Mensaje</th>
-      <th colspan="2"></th>
+      <th>Fecha</th>
+      <th>Hora</th>
+      <th>Preview</th>
     </tr>
   </thead>
 
@@ -41,7 +43,14 @@
       <% if post.message != nil %>
         <tr>
             <td><%= render :partial => '/posts/user_helper', locals: {post: post} %></td>
-            <td><%= post[:message] %></td>
+            <td width="100%" ><%= post[:message] %></td>
+            <td><%= post.date_created %></td>
+            <td><%= post.time_created.strftime("%H:%M:%S") %></td>
+            <% if post.image.attached? %>
+              <td><%= image_tag post.image.variant(resize_to_limit: [100, 100]) %></td>
+            <% else %>
+              <td height="100">No hay imagen</td>
+            <% end %>
             <td><%= link_to 'Ver', url_for([@section, post]) %></td>
           </tr>
           <% end %>
