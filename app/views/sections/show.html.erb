@@ -31,9 +31,9 @@
   <thead>
     <tr>
       <th>Usuario</th>
-      <th>Mensaje</th>
       <th>Fecha</th>
       <th>Hora</th>
+      <th>Mensaje</th>
       <th>Preview</th>
     </tr>
   </thead>
@@ -43,15 +43,21 @@
       <% if post.message != nil %>
         <tr>
             <td><%= render :partial => '/posts/user_helper', locals: {post: post} %></td>
-            <td width="100%" ><%= post[:message] %></td>
             <td><%= post.date_created %></td>
             <td><%= post.time_created.strftime("%H:%M:%S") %></td>
+            <td width="100%" ><%= post[:message] %></td>
             <% if post.image.attached? %>
-              <td><%= image_tag post.image.variant(resize_to_limit: [100, 100]) %></td>
+              <td height="100"><%= image_tag post.image.variant(resize_to_limit: [100, 100]) %></td>
             <% else %>
               <td height="100">No hay imagen</td>
             <% end %>
-            <td><%= link_to 'Ver', url_for([@section, post]) %></td>
+            <td> Likes: <%= post.likes - post.dislikes %> </td>
+            <td>
+              <%= link_to 'Ver', url_for([@section, post]) %> <br> <br>
+              <% if session[:user_id] == post.user_id or Admin.where("section_id = ? AND user_id = ?", params[:id], session[:user_id]).present? %>
+                <%= link_to 'Borrar post',  [post.section, post], method: :delete, data: { confirm: 'Seguro que quieres borrar el post? Todas las respuestas tambien seran eliminadas.'  } %>
+              <% end %>
+            </td>
           </tr>
           <% end %>
     <% end %>

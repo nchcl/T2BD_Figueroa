@@ -3,7 +3,13 @@ class RepliesController < ApplicationController
     @section = Section.find(params[:section_id])
     @post = Post.find(params[:post_id])
     @reply = @section.posts.find(params[:post_id]).replies.create(reply_params)
-    redirect_to section_post_path(@section, @post)
+
+    if @reply.save
+      @user = current_user
+      redirect_to section_post_user_path(@section, @post, @user)
+    else
+      redirect_to section_post_path(@section, @post)
+    end
   end
 
   def destroy

@@ -1,3 +1,9 @@
+<div class="img" align="center">
+  <% if @post.image.attached? %>
+    <td><%= image_tag @post.image %></td>
+  <% end %>
+</div>
+
 <% if @post.locked %>
 <h2>Post cerrado</h2>
 <% else %>
@@ -21,12 +27,6 @@
   </p>
 <% end %>
 <% end %>
-
-<div class="img" align="center">
-  <% if @post.image.attached? %>
-    <td><%= image_tag @post.image %></td>
-  <% end %>
-  </div>
 
 <table border="1" >
   <thead>
@@ -52,6 +52,11 @@
       <td><%= @post.date_created %></td>
       <td><%= @post.time_created.strftime("%H:%M:%S") %></td>
       <td width="100%" ><%= @post.message %></td>
+      <td>
+        <%= link_to 'Like', section_post_like_path(@section, @post, :likes => (@post.likes + 1)) %> <br>
+        <%= link_to 'Dislike', section_post_dislike_path(@section, @post, :dislikes => (@post.dislikes + 1)) %> <br><br>
+        Likes: <%= @post.likes - @post.dislikes %>
+      </td>
     </tr>
   </tbody>
 
@@ -86,9 +91,9 @@
 
 <td><%= link_to 'Volver', section_path(@section) %></td>
 <% if session[:user_id] == @post.user_id or Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? %>
-  | <td><%= link_to 'Destruir post',  [@post.section, @post], method: :delete, data: { confirm: 'Seguro que quieres borrar el post? Todas las respuestas tambien seran eliminadas.'  } %></td>
+  | <td><%= link_to 'Borrar post',  [@post.section, @post], method: :delete, data: { confirm: 'Seguro que quieres borrar el post? Todas las respuestas tambien seran eliminadas.'  } %></td>
 <% end %>
 
 <% if Admin.where("section_id = ? AND user_id = ?", params[:section_id], session[:user_id]).present? and !@post.locked %>
-  | <td><%= link_to 'Dejar inactivo', section_post_path(@section, @post, :locked => true), method: :put, data: { confirm: "Are you sure?" } %></td>
+  | <td><%= link_to 'Dejar inactivo', section_post_path(@section, @post, :locked => true), method: :put, data: { confirm: "No se podran escribir mas respuestas" } %></td>
 <% end %>

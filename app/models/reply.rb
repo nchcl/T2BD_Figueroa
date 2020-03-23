@@ -5,6 +5,7 @@ class Reply < ApplicationRecord
   belongs_to :section
   belongs_to :user
   has_one_attached :image
+  validates :message, presence: true
 
   private
     def default_values

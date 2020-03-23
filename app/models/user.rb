@@ -7,8 +7,7 @@ class User < ApplicationRecord
   has_many :admins, :dependent => :destroy
   has_secure_password
   validates :email, presence: true, uniqueness: true
-  #validates :password_digest, :length => { :maximum => 30 }
-  #validates :username, :length => { :maximum => 15 }
+  validates :username, presence: true, uniqueness: true
   private
     def default_values
       self.nivel_respueston ||= "Bronce"

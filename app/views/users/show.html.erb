@@ -13,7 +13,10 @@
   <%= @user.nivel_publicon %> <br>
   <strong>Avatar:</strong>
   <% if @user.avatar.attached? %>
-    <%= image_tag @user.avatar.variant(resize_to_limit: [100, 100]) %>
+    <%= image_tag @user.avatar.variant(resize_to_limit: [100, 100]) %> <br>
+    <% if session[:user_id] == @user.id %>
+      <b> <%= link_to 'Borrar avatar', delavatar_user_path(@user) %> </b>
+    <% end %>
   <% else %>
     No hay avatar
   <% end %>
@@ -22,5 +25,5 @@
 <%= link_to 'Volver', users_path %>
 <% if session[:user_id] == @user.id %>
   | <%= link_to 'Editar', edit_user_path(@user) %> |
-  <%= link_to 'Borrar', @user, method: :delete, data: { confirm: 'Seguro que quieres borrar?' } %>
+  <%= link_to 'Borrar', @user, method: :delete, data: { confirm: 'Seguro que quieres borrar tu usuario?' } %>
 <% end %>

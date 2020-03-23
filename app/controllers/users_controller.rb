@@ -1,34 +1,25 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  # GET /users
-  # GET /users.json
   def index
     @users = User.all
   end
 
-  # GET /users/1
-  # GET /users/1.json
   def show
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
   def edit
   end
 
-  # POST /users
-  # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to @user, notice: 'Usuario creado con exito.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -37,12 +28,10 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1
-  # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Usuario actualizado con extio.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -51,24 +40,58 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
-  # DELETE /users/1.json
+  def respueston
+    @user = User.find(params[:id])
+    @section = Section.find(params[:section_id])
+    @post = Post.find(params[:post_id])
+
+    n_reply = Reply.where("user_id = ?", @user.id).count
+    if n_reply < 5
+      @user.update_attribute(:nivel_respueston, 'Bronce')
+    elsif n_reply >= 5 and n_reply < 15
+      @user.update_attribute(:nivel_respueston, 'Plata')
+    elsif n_reply >= 15
+      @user.update_attribute(:nivel_respueston, 'Oro')
+    end
+
+    redirect_to section_post_path(@section, @post)
+  end
+
+  def publicon
+    @user = User.find(params[:id])
+    @section = Section.find(params[:section_id])
+
+    n_post = Post.where("user_id = ?", @user.id).count
+    if n_post < 5
+      @user.update_attribute(:nivel_publicon, 'Bronce')
+    elsif n_post >= 5 and n_post < 15
+       @user.update_attribute(:nivel_publicon, 'Plata')
+    elsif n_post >= 15
+       @user.update_attribute(:nivel_publicon, 'Oro')
+    end
+    redirect_to section_path(@section)
+  end
+
+  def delavatar
+    @user = User.find(params[:id])
+    @user.avatar.purge
+    redirect_to @user
+  end
+
   def destroy
     @user.destroy
     session[:user_id] = nil
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to users_url, notice: 'Usuario destruido con exito.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def user_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation, :birth_date, :avatar)
     end
